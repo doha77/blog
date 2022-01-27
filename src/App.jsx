@@ -2,11 +2,11 @@ import logo from "./logo.svg";
 import "./App.css";
 import React from "react";
 import AddButton from "./components/AddButton";
+import ArticleForm from "./components/ArticleForm";
 import ArticleModal from "./components/ArticleModal";
-import firebase from "firebase";
 import Fire from "./Fire";
 import ArticleCard from "./components/ArticleCard";
-import CommentModal from "./components/CommentModal";
+import CommentModal from "./components/CommentModal.jsx";
 
 export default class App extends React.Component {
   constructor() {
@@ -21,10 +21,11 @@ export default class App extends React.Component {
     };
   }
 
-  componentiDidMount() {
+  componentDidMount() {
     console.log("avant le render");
     const firebase = new Fire((error) => {
       if (error) {
+        console.log(error);
         this.setState({
           error: error,
         });
@@ -55,8 +56,9 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <img src={"blog-logo.png"} className="App-logo" alt="logo" />
           <p> {this.state.titre} </p>
+
           <AddButton
             content="Rédiger un article"
             onClick={() => this.setState({ isArticleModalVisible: true })}
@@ -73,15 +75,6 @@ export default class App extends React.Component {
               });
             }}
           />
-          <CommentModal
-            isVisible={this.state.isCommentModalVisible}
-            onCancel={() =>
-              this.setState({
-                isCommentModalVisible: false,
-              })
-            }
-          />
-          ))
         </header>
       </div>
     );

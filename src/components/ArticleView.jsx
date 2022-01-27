@@ -4,7 +4,7 @@ import ArticleForm from "./ArticleForm";
 import Fire from "../Fire";
 import CommentCard from "./CommentCard";
 
-export default class ArticleModal extends React.Component {
+export default class ArticleView extends React.Component {
   constructor() {
     super();
     this.state = {

@@ -1,12 +1,12 @@
 import firebase from "firebase";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDx-6XbKw7pMrChICi0k2i-dLbl9Ga66pc",
-  authDomain: "bolg1-2266d.firebaseapp.com",
-  projectId: "bolg1-2266d",
-  storageBucket: "bolg1-2266d.appspot.com",
-  messagingSenderId: "824591482043",
-  appId: "1:824591482043:web:45816ddbdfa7e40f3b7d9e",
+  apiKey: "AIzaSyABTRDqxiaQOQESav65RixkF8GQ1J_wGV4",
+  authDomain: "fir-9a20a.firebaseapp.com",
+  projectId: "fir-9a20a",
+  storageBucket: "fir-9a20a.appspot.com",
+  messagingSenderId: "29483728856",
+  appId: "1:29483728856:web:60e8f26c2fc8a573133cad",
 };
 
 export default class Fire {
@@ -40,6 +40,7 @@ export default class Fire {
         snapshot.forEach((doc) => {
           articles.push({ id: doc.id, ...doc.data() });
         });
+        console.log(articles);
         callback(articles.reverse());
       },
       function (error) {
