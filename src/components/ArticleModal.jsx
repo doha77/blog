@@ -2,23 +2,57 @@ import { Button, Modal } from "antd";
 import React from "react";
 import ArticleForm from "./ArticleForm";
 import Fire from "../Fire";
-import CommentCard from "./CommentCard";
 
 export default class ArticleModal extends React.Component {
   constructor() {
     super();
     this.state = {
-      titre: "",
-      contenu: "",
-      imageUrl: "",
+      article: {
+        title: "",
+        content: "",
+        imageUrl: "",
+      },
     };
   }
-  handleArticle = () => {
-    const { article, onCancel } = this.props;
+
+  componentDidMount() {
+    if (this.props.article) {
+      this.setState({ article: this.props.article });
+    }
+  }
+
+  handleChange = (e) => {
+    const article = this.props.article;
+    console.log(article);
+    switch (e.target.name) {
+      case "titre":
+        article.title = e.target.value;
+        break;
+      case "contenu":
+        article.content = e.target.value;
+        break;
+      case "imageUrl":
+        article.imageUrl = e.target.value;
+        break;
+      default:
+        break;
+    }
+    this.setState({ article });
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    alert(
+      'Votre article "' +
+        this.state.article.title +
+        '" a été créé avec succès !'
+    );
     const firebase = new Fire((error) => {
       if (error) {
-        this.setState({ error: error });
+        console.log(error);
       } else {
+        const article = this.state.article;
+        console.log(article);
         if (article.created_at) {
           article.created_at = new Date();
           firebase.updateArticle(article);
@@ -29,36 +63,12 @@ export default class ArticleModal extends React.Component {
         }
       }
     });
-    onCancel();
-  };
-
-  handleChange = (e) => {
-    switch (e.target.name) {
-      case "titre":
-        this.setState({ titre: e.target.value });
-        break;
-      case "contenu":
-        this.setState({ contenu: e.target.value });
-        break;
-      case "imageUrl":
-        this.setState({ titre: e.target.value });
-        break;
-      default:
-        break;
-    }
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    alert(
-      "Titre : " + this.state.titre + "\r\nContenu : " + this.state.contenu
-    );
     this.props.switchModal();
   };
 
   render() {
-    const { isVisible, title, article } = this.props;
-    console.log(this.state.titre + "\n" + this.state.contenu);
+    const { isVisible, title } = this.props;
+    console.log(this.props.article);
     return (
       <Modal
         visible={isVisible}
@@ -78,9 +88,7 @@ export default class ArticleModal extends React.Component {
       >
         <ArticleForm
           handleChange={this.handleChange}
-          title={this.state.title}
-          contenu={this.state.contenu}
-          imageUrl={this.state.imageUrl}
+          article={this.props.article}
         />
       </Modal>
     );

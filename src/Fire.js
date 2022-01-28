@@ -40,7 +40,6 @@ export default class Fire {
         snapshot.forEach((doc) => {
           articles.push({ id: doc.id, ...doc.data() });
         });
-        console.log(articles);
         callback(articles.reverse());
       },
       function (error) {

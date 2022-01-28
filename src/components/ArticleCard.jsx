@@ -1,6 +1,9 @@
 import React from "react";
-import { Card } from "antd";
+import { Card, Popconfirm, Tooltip } from "antd";
 import Fire from "../Fire";
+import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+
+const { Meta } = Card;
 
 export default class ArticleCard extends React.Component {
   constructor(props) {
@@ -10,7 +13,7 @@ export default class ArticleCard extends React.Component {
     };
   }
 
-  confirm = () => {
+  confirmDelete = () => {
     const { article } = this.props;
     const firebase = new Fire((error) => {
       if (error) {
@@ -19,10 +22,6 @@ export default class ArticleCard extends React.Component {
         firebase.deleteArticle(article);
       }
     });
-  };
-
-  cancel = (e) => {
-    console.log(e);
   };
 
   render() {
@@ -37,7 +36,32 @@ export default class ArticleCard extends React.Component {
         bordered={false}
         style={{ width: 300, margin: 15 }}
         cover={<img alt={article.title} src={article.imageUrl} />}
-        actions={[]}
+        actions={[
+          <Tooltip title="Lire">
+            <EyeOutlined
+              onClick={() => onView(article)}
+              style={{ color: "#0E1428" }}
+            />
+          </Tooltip>,
+          <Tooltip title="Modifier">
+            <EditOutlined
+              style={{ color: "#CB429F" }}
+              onClick={() => onEdit(article)}
+            />
+          </Tooltip>,
+          <Popconfirm
+            title="Êtes-vous sûr de vouloir supprimer cet article ?"
+            onConfirm={this.confirmDelete}
+            okText="Oui"
+            cancelText="Non"
+          >
+            <a href="javascript">
+              <Tooltip title="Supprimer">
+                <DeleteOutlined style={{ color: "red" }} />
+              </Tooltip>
+            </a>
+          </Popconfirm>,
+        ]}
       >
         <p>
           {article.content.substring(0, 80)}
